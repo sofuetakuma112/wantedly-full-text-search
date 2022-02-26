@@ -1,0 +1,85 @@
+.jobCard {
+  margin-bottom: 40px;
+}
+
+.imgWrapper {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.imgWrapper:hover {
+  opacity: 0.6;
+  transition: 0.3s ease-in-out;
+}
+
+.imgWrapper img {
+  width: 100%;
+}
+
+.jobMetas {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.jobMeta {
+  margin-left: 10px;
+}
+
+.jobTags > .jobTag {
+  margin-right: 8px;
+}
+
+.jobTag:last-child {
+  margin: 0;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700px;
+  line-height: 32px;
+  margin: 8px 0;
+}
+
+.title:hover {
+  opacity: 0.6;
+}
+
+.title a {
+  text-decoration: none;
+  color: #222;
+}
+
+.companyInfo {
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  justify-content: center;
+}
+
+.companyInfoLeft {
+  display: flex;
+  margin-right: 50px;
+}
+
+.companyAvatarWrapper {
+  height: 40px;
+  width: 40px;
+  margin: auto 0;
+  margin-right: 20px;
+}
+
+.companyAvatarWrapper img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.companyNameWrapper {
+  display: table;
+}
+
+.companyName {
+  display: table-cell;
+  vertical-align: middle;
+}
