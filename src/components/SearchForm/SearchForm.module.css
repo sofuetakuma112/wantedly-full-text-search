@@ -1,0 +1,11 @@
+.sortWrapper {
+  display: flex;
+}
+
+.sortPropertySelector {
+  flex: 4;
+}
+
+.sortDirectionSelector {
+  flex: 1;
+}

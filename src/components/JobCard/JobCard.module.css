@@ -1,4 +1,4 @@
-.jobCard {
+.card {
   margin-bottom: 40px;
 }
 
@@ -6,6 +6,10 @@
   width: 100%;
   margin-top: 50px;
   max-height: 378px;
+}
+
+.imgWrapperNoMargin {
+  margin-top: 0;
 }
 
 .imgWrapper a {

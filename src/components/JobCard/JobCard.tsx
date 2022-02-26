@@ -2,7 +2,7 @@ import React from "react";
 import cssModule from "./JobCard.module.css";
 import { Badge } from "react-bootstrap";
 import { Job } from "../../types/type";
-import noImage from '../../assets/noimage.png';
+import noImage from "../../assets/noimage.png";
 
 const JobCard = ({
   title,
@@ -18,10 +18,13 @@ const JobCard = ({
   url,
   eyecatchImgSrc,
   companyThumbnailImgSrc,
-}: Job) => {
+  index,
+}: Job & { index: number }) => {
   return (
-    <div className={cssModule.jobCard}>
-      <div className={cssModule.imgWrapper}>
+    <div className={cssModule.card}>
+      <div
+        className={index === 0 ? [cssModule.imgWrapper, cssModule.imgWrapperNoMargin].join(' ') : cssModule.imgWrapper}
+      >
         <a href={url} target="_blank" rel="noreferrer">
           <img src={eyecatchImgSrc || noImage} alt="eyecatch" />
         </a>

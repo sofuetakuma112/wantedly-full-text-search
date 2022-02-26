@@ -4,25 +4,11 @@
   margin: 0 auto;
 }
 
-.sortWrapper {
-  display: flex;
-}
-
-.sortPropertySelector {
-  flex: 4;
-}
-
-.sortDirectionSelector {
-  flex: 1;
+.searchResult {
+  text-align: left;
+  margin: 20px 0 20px 0;
 }
 
 .horizonLine {
   margin: 0;
-}
-
-.pagination {
-  margin: 0;
-  margin-top: 40px;
-  margin-bottom: 50px;
-  justify-content: center;
 }
