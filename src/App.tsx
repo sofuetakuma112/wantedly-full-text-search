@@ -3,6 +3,7 @@ import { Form, Button, Pagination } from "react-bootstrap";
 import cssModule from "./App.module.css";
 import JobCard from "./components/JobCard/JobCard";
 import { Job } from "./types/type";
+import { range } from "./utils/util";
 
 function App() {
   const [andWord, setAndWord] = useState("");
@@ -10,14 +11,18 @@ function App() {
   const [allJobs, setAllJobs] = useState<Job[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
   const maxPageNumber = useMemo(
     () => Math.ceil(allJobs.length / 10),
     [allJobs]
   );
   const search = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!andWord && !orWord) return;
-    fetch(`http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}`)
+    if (!andWord && !orWord && (!sortCriteria || !sortDirection)) return;
+    fetch(
+      `http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteria}&sortDirection=${sortDirection}`
+    )
       .then((res) => res.json())
       .then((data) => setAllJobs(data));
   };
@@ -37,9 +42,6 @@ function App() {
     if (nextPageNumber < 1 || nextPageNumber > maxPageNumber) return;
     setPageNumber(nextPageNumber);
   };
-
-  const range = (length: number, startNumber: number) =>
-    Array.from({ length }, (v, i) => i + startNumber);
 
   const createPaginationArray = (pageNumber: number) => {
     // 引数からページネーションの番号配列を作成する
@@ -62,6 +64,19 @@ function App() {
       ...range(countOfRightPagication, pageNumber + 1),
     ];
   };
+
+  const sortCriterias = [
+    { value: "entry", text: "エントリー数" },
+    { value: "countOfView", text: "閲覧数" },
+    { value: "publishDate", text: "求人投稿日" },
+    { value: "establishmentDate", text: "会社設立日" },
+    { value: "countOfMember", text: "会社人数" },
+  ];
+
+  const sortDirections = [
+    { value: "ascending", text: "昇順(古い順)" },
+    { value: "descending", text: "降順(新しい順)" },
+  ];
 
   return (
     <div className={cssModule.app}>
@@ -86,6 +101,32 @@ function App() {
             onChange={(e) => setOrWord(e.target.value)}
           />
         </Form.Group>
+        <div className={cssModule.sortWrapper}>
+          <Form.Select
+            aria-label="Default select example"
+            className={cssModule.sortPropertySelector}
+            onChange={(e) => setSortCriteria(e.target.value)}
+          >
+            <option>ソート基準</option>
+            {sortCriterias.map(({ value, text }, i) => (
+              <option key={i} value={value}>
+                {text}
+              </option>
+            ))}
+          </Form.Select>
+          <Form.Select
+            aria-label="Default select example"
+            className={cssModule.sortDirectionSelector}
+            onChange={(e) => setSortDirection(e.target.value)}
+          >
+            <option>ソート方向</option>
+            {sortDirections.map(({ value, text }, i) => (
+              <option key={i} value={value}>
+                {text}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
         <Button variant="primary" type="submit">
           検索
         </Button>

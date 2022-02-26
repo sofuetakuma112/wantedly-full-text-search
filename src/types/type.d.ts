@@ -5,12 +5,12 @@ export type Job = {
   countOfMember: string;
   location: string;
   publishDate: string;
-  view: string;
+  view: string | null;
   countOfEntry: string;
   description: string;
   summary: string;
   tags: string;
   url: string;
-  eyecatchImgSrc: string;
-  companyThumbnailImgSrc: string;
+  eyecatchImgSrc: string | null;
+  companyThumbnailImgSrc: string | null;
 };
