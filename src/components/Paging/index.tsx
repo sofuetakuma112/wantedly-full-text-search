@@ -1,5 +1,5 @@
 import { Pagination } from "react-bootstrap";
-import cssModule from "./Paging.module.css";
+import cssModule from "./style.module.css";
 import { range } from "../../utils/util";
 
 const Paging = ({

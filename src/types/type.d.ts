@@ -1,4 +1,11 @@
-export type Job = {
+export type Job = JobImage & JobMeta;
+
+export type JobImage = {
+  eyecatchImgSrc: string | null;
+  url: string;
+};
+
+export type JobMeta = {
   title: string;
   company: string;
   establishmentDate: string;
@@ -7,10 +14,8 @@ export type Job = {
   publishDate: string;
   view: string | null;
   countOfEntry: string;
-  description: string;
   summary: string;
   tags: string;
   url: string;
-  eyecatchImgSrc: string | null;
   companyThumbnailImgSrc: string | null;
 };

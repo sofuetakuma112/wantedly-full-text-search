@@ -1,10 +1,10 @@
 import React from "react";
-import cssModule from "./JobCard.module.css";
+import cssModule from "./style.module.css";
 import { Badge } from "react-bootstrap";
-import { Job } from "../../types/type";
+import { JobMeta } from "../../types/type";
 import noImage from "../../assets/noimage.png";
 
-const JobCard = ({
+function JobInfo({
   title,
   company,
   establishmentDate,
@@ -13,22 +13,13 @@ const JobCard = ({
   publishDate,
   view,
   countOfEntry,
-  summary,
   tags,
   url,
-  eyecatchImgSrc,
   companyThumbnailImgSrc,
-  index,
-}: Job & { index: number }) => {
+  summary
+}: JobMeta) {
   return (
-    <div className={cssModule.card}>
-      <div
-        className={index === 0 ? [cssModule.imgWrapper, cssModule.imgWrapperNoMargin].join(' ') : cssModule.imgWrapper}
-      >
-        <a href={url} target="_blank" rel="noreferrer">
-          <img src={eyecatchImgSrc || noImage} alt="eyecatch" />
-        </a>
-      </div>
+    <>
       <div className={cssModule.jobMetas}>
         <div className={cssModule.jobTags}>
           {tags.split(",").map((tag, i) => (
@@ -68,8 +59,8 @@ const JobCard = ({
           <span>{location}</span>
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
-export default JobCard;
+export default JobInfo;

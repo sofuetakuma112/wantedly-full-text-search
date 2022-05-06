@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import JobCard from "./components/JobCard/JobCard";
+import JobCard from "./components/JobCard";
 import SearchForm, { States } from "./components/SearchForm/SearchForm";
-import Paging from "./components/Paging/Paging";
+import Paging from "./components/Paging";
 import cssModule from "./App.module.css";
 import { Job } from "./types/type";
 import { Carousel } from "react-bootstrap";
+import classNames from "classnames";
 
 function App() {
   const [allJobsList, setAllJobsList] = useState<Job[][]>([]);
@@ -33,6 +34,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setAllJobsList(data);
+        setPageNumber(1);
       });
   };
 
@@ -62,10 +64,32 @@ function App() {
       }`}</p>
       {jobsList.map((jobs: Job[], i: number) => (
         <div key={i}>
-          <Carousel interval={null} wrap={false}>
-            {jobs.map((job, j) => (
+          <Carousel
+            interval={null}
+            wrap={false}
+            variant="dark"
+            nextIcon={
+              <span
+                aria-hidden="true"
+                className={classNames(
+                  "carousel-control-next-icon",
+                  cssModule.carouselIcon
+                )}
+              />
+            }
+            prevIcon={
+              <span
+                aria-hidden="true"
+                className={classNames(
+                  "carousel-control-prev-icon",
+                  cssModule.carouselIcon
+                )}
+              />
+            }
+          >
+            {jobs.map((job) => (
               <Carousel.Item key={job.url}>
-                <JobCard {...job} index={j} />
+                <JobCard {...job} />
               </Carousel.Item>
             ))}
           </Carousel>
