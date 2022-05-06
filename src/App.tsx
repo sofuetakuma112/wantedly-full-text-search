@@ -4,27 +4,36 @@ import SearchForm, { States } from "./components/SearchForm/SearchForm";
 import Paging from "./components/Paging/Paging";
 import cssModule from "./App.module.css";
 import { Job } from "./types/type";
+import { Carousel } from "react-bootstrap";
 
 function App() {
-  const [allJobs, setAllJobs] = useState<Job[]>([]);
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [allJobsList, setAllJobsList] = useState<Job[][]>([]);
+  const [jobsList, setJobsList] = useState<Job[][]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const maxPageNumber = useMemo(
-    () => Math.ceil(allJobs.length / 10),
-    [allJobs]
+    () => Math.ceil(allJobsList.length / 10),
+    [allJobsList]
   );
 
   const search = (
     e: React.SyntheticEvent,
-    { andWord, orWord, sortCriteriaText, sortDirection }: States
+    {
+      andWord,
+      orWord,
+      sortCriteriaText,
+      sortDirection,
+      shouldSummarizeByCompany,
+    }: States
   ) => {
     e.preventDefault();
-    if (!andWord && !orWord && (!sortCriteriaText || !sortDirection)) return;
+    // if (!andWord && !orWord && (!sortCriteriaText || !sortDirection)) return;
     fetch(
-      `http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteriaText}&sortDirection=${sortDirection}`
+      `http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteriaText}&sortDirection=${sortDirection}&shouldSummarizeByCompany=${shouldSummarizeByCompany}`
     )
       .then((res) => res.json())
-      .then((data) => setAllJobs(data));
+      .then((data) => {
+        setAllJobsList(data);
+      });
   };
 
   const handleClickPagination = (nextPageNumber: number) => {
@@ -35,23 +44,31 @@ function App() {
   useEffect(() => {
     fetch("http://localhost:3001/")
       .then((res) => res.json())
-      .then((data) => setAllJobs(data));
+      .then((data) => {
+        setAllJobsList(data);
+      });
   }, []);
 
   useEffect(() => {
-    setJobs(allJobs.slice((pageNumber - 1) * 10, pageNumber * 10));
+    setJobsList(allJobsList.slice((pageNumber - 1) * 10, pageNumber * 10));
     window.scrollTo(0, 0);
-  }, [pageNumber, allJobs]);
+  }, [pageNumber, allJobsList]);
 
   return (
     <div className={cssModule.app}>
       <SearchForm search={search} />
       <p className={cssModule.searchResult}>{`${pageNumber * 10} / ${
-        allJobs.length
+        allJobsList.length
       }`}</p>
-      {jobs.map((job: Job, i: number) => (
-        <div key={job.url}>
-          <JobCard {...job} index={i} />
+      {jobsList.map((jobs: Job[], i: number) => (
+        <div key={i}>
+          <Carousel interval={null} wrap={false}>
+            {jobs.map((job, j) => (
+              <Carousel.Item key={job.url}>
+                <JobCard {...job} index={j} />
+              </Carousel.Item>
+            ))}
+          </Carousel>
           <hr className={cssModule.horizonLine} />
         </div>
       ))}

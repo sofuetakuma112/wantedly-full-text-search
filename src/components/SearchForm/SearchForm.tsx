@@ -7,14 +7,15 @@ export type States = {
   orWord: string;
   sortCriteriaText: string;
   sortDirection: string;
+  shouldSummarizeByCompany: boolean
 };
 
 type SortCriteria = {
-  value: string,
-  text: string,
-  ascending: string,
-  descending: string,
-}
+  value: string;
+  text: string;
+  ascending: string;
+  descending: string;
+};
 
 const SearchForm = ({
   search,
@@ -30,6 +31,8 @@ const SearchForm = ({
     descending: "降順",
   });
   const [sortDirection, setSortDirection] = useState("");
+  const [shouldSummarizeByCompany, setShouldSummarizeByCompany] =
+    useState(false);
 
   const ascOfCount = "少ない順";
   const descOfCount = "多い順";
@@ -68,10 +71,7 @@ const SearchForm = ({
       descending: descOfCount,
     },
   ];
-  const sortDirections = [
-    { value: "ascending" },
-    { value: "descending" },
-  ];
+  const sortDirections = [{ value: "ascending" }, { value: "descending" }];
   return (
     <Form
       onSubmit={(e) =>
@@ -80,6 +80,7 @@ const SearchForm = ({
           orWord,
           sortCriteriaText: sortCriteria.value,
           sortDirection,
+          shouldSummarizeByCompany,
         })
       }
     >
@@ -105,7 +106,9 @@ const SearchForm = ({
           className={cssModule.sortPropertySelector}
           onChange={(e) =>
             setSortCriteria(
-              sortCriterias.find((sc) => sc.value === e.target.value) as SortCriteria
+              sortCriterias.find(
+                (sc) => sc.value === e.target.value
+              ) as SortCriteria
             )
           }
           value={sortCriteria.value}
@@ -131,6 +134,13 @@ const SearchForm = ({
           ))}
         </Form.Select>
       </div>
+      <Form.Check
+        type="checkbox"
+        id={`default-checkbox`}
+        label="会社ごとに求人をまとめて表示する"
+        onChange={() => setShouldSummarizeByCompany((oldValue) => !oldValue)}
+        checked={shouldSummarizeByCompany}
+      />
       <Button variant="primary" type="submit">
         検索
       </Button>
