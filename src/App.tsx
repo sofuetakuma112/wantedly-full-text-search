@@ -16,12 +16,12 @@ function App() {
 
   const search = (
     e: React.SyntheticEvent,
-    { andWord, orWord, sortCriteria, sortDirection }: States
+    { andWord, orWord, sortCriteriaText, sortDirection }: States
   ) => {
     e.preventDefault();
-    if (!andWord && !orWord && (!sortCriteria || !sortDirection)) return;
+    if (!andWord && !orWord && (!sortCriteriaText || !sortDirection)) return;
     fetch(
-      `http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteria}&sortDirection=${sortDirection}`
+      `http://localhost:3001/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteriaText}&sortDirection=${sortDirection}`
     )
       .then((res) => res.json())
       .then((data) => setAllJobs(data));

@@ -5,9 +5,16 @@ import cssModule from "./SearchForm.module.css";
 export type States = {
   andWord: string;
   orWord: string;
-  sortCriteria: string;
+  sortCriteriaText: string;
   sortDirection: string;
 };
+
+type SortCriteria = {
+  value: string,
+  text: string,
+  ascending: string,
+  descending: string,
+}
 
 const SearchForm = ({
   search,
@@ -16,19 +23,54 @@ const SearchForm = ({
 }) => {
   const [andWord, setAndWord] = useState("");
   const [orWord, setOrWord] = useState("");
-  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortCriteria, setSortCriteria] = useState<SortCriteria>({
+    value: "",
+    text: "",
+    ascending: "昇順",
+    descending: "降順",
+  });
   const [sortDirection, setSortDirection] = useState("");
 
+  const ascOfCount = "少ない順";
+  const descOfCount = "多い順";
+  const ascOfDate = "古い順";
+  const descOfDate = "新しい順";
+
   const sortCriterias = [
-    { value: "entry", text: "エントリー数" },
-    { value: "countOfView", text: "閲覧数" },
-    { value: "publishDate", text: "求人投稿日" },
-    { value: "establishmentDate", text: "会社設立日" },
-    { value: "countOfMember", text: "会社人数" },
+    {
+      value: "entry",
+      text: "エントリー数",
+      ascending: ascOfCount,
+      descending: descOfCount,
+    },
+    {
+      value: "countOfView",
+      text: "閲覧数",
+      ascending: ascOfCount,
+      descending: descOfCount,
+    },
+    {
+      value: "publishDate",
+      text: "求人投稿日",
+      ascending: ascOfDate,
+      descending: descOfDate,
+    },
+    {
+      value: "establishmentDate",
+      text: "会社設立日",
+      ascending: ascOfDate,
+      descending: descOfDate,
+    },
+    {
+      value: "countOfMember",
+      text: "会社人数",
+      ascending: ascOfCount,
+      descending: descOfCount,
+    },
   ];
   const sortDirections = [
-    { value: "ascending", text: "昇順(古い順)" },
-    { value: "descending", text: "降順(新しい順)" },
+    { value: "ascending" },
+    { value: "descending" },
   ];
   return (
     <Form
@@ -36,7 +78,7 @@ const SearchForm = ({
         search(e, {
           andWord,
           orWord,
-          sortCriteria,
+          sortCriteriaText: sortCriteria.value,
           sortDirection,
         })
       }
@@ -61,8 +103,12 @@ const SearchForm = ({
         <Form.Select
           aria-label="Default select example"
           className={cssModule.sortPropertySelector}
-          onChange={(e) => setSortCriteria(e.target.value)}
-          value={sortCriteria}
+          onChange={(e) =>
+            setSortCriteria(
+              sortCriterias.find((sc) => sc.value === e.target.value) as SortCriteria
+            )
+          }
+          value={sortCriteria.value}
         >
           <option>ソート基準</option>
           {sortCriterias.map(({ value, text }, i) => (
@@ -78,9 +124,9 @@ const SearchForm = ({
           value={sortDirection}
         >
           <option>ソート方向</option>
-          {sortDirections.map(({ value, text }, i) => (
+          {sortDirections.map(({ value }, i: number) => (
             <option key={i} value={value}>
-              {text}
+              {sortCriteria[value as keyof SortCriteria]}
             </option>
           ))}
         </Form.Select>
