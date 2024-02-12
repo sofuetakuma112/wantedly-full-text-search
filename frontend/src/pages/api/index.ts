@@ -10,3 +10,9 @@ export default async function handler(
   const jobs = await loadAllJobs();
   res.status(200).json(jobs.map((job: any) => [job]));
 }
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};

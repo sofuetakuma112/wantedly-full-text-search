@@ -26,3 +26,9 @@ export default async function handler(
 
   res.status(200).json(filteredJobs);
 }
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
