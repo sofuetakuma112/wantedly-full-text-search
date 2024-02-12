@@ -1,0 +1,23 @@
+{
+  "name": "scraping-jobs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv": "^6.0.5",
+    "csv-writer": "^1.6.0",
+    "express": "^4.17.3",
+    "lodash": "^4.17.21",
+    "puppeteer": "^13.4.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.17"
+  }
+}
