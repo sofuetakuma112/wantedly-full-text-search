@@ -7,12 +7,12 @@ import { Job } from "@/types/type";
 import { Carousel } from "react-bootstrap";
 import classNames from "classnames";
 import { loadAllJobs } from "@/utils/util";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { filterJobs } from "@/utils/filter";
 
 export default function Home({
   jobs,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const [allJobsList, setAllJobsList] = useState<Job[][]>(
     jobs.map((job) => [job])
   );
@@ -106,7 +106,7 @@ export default function Home({
   );
 }
 
-export const getServerSideProps = (async () => {
+export const getStaticProps = (async () => {
   const jobs = await loadAllJobs();
   return { props: { jobs } };
-}) satisfies GetServerSideProps<{ jobs: Job[] }>;
+}) satisfies GetStaticProps<{ jobs: Job[] }>;
