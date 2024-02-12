@@ -63,7 +63,7 @@ const sortByCriteriaAndDirection = (
         return aCountOfMember - bCountOfMember;
       } else return bCountOfMember - aCountOfMember;
     default:
-      return true;
+      return 0;
   }
 };
 
