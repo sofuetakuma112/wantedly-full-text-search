@@ -1,4 +1,5 @@
-import { loadAllJobs, isKeyExists } from "@/utils/util";
+import { Job } from "@/types/type";
+import { isKeyExists } from "@/utils/util";
 
 const hasContainWord = (word: string | RegExp, description: string) => {
   const regexp = new RegExp(word, "i");
@@ -66,20 +67,22 @@ const sortByCriteriaAndDirection = (
   }
 };
 
-export const filterJobs = async ({
-  andWords,
-  orWords,
-  sortCriteria,
-  sortDirection,
-  shouldSummarizeByCompany,
-}: {
-  andWords: string[];
-  orWords: string[];
-  sortCriteria: string | string[];
-  sortDirection: string | string[];
-  shouldSummarizeByCompany: boolean;
-}) => {
-  const jobs = await loadAllJobs();
+export const filterJobs = (
+  {
+    andWords,
+    orWords,
+    sortCriteria,
+    sortDirection,
+    shouldSummarizeByCompany,
+  }: {
+    andWords: string[];
+    orWords: string[];
+    sortCriteria: string | string[];
+    sortDirection: string | string[];
+    shouldSummarizeByCompany: boolean;
+  },
+  jobs: Job[]
+) => {
   // title,company,establishmentDate,countOfMember,location,publishDate,view,countOfEntry,description,summary,tags,url,eyecatchImgSrc,companyThumbnailImgSrc
   const filteredJobs = jobs.filter(
     ({ description, publishDate, establishmentDate }: any) => {

@@ -6,9 +6,16 @@ import cssModule from "@/styles/Home.module.css";
 import { Job } from "@/types/type";
 import { Carousel } from "react-bootstrap";
 import classNames from "classnames";
+import { loadAllJobs } from "@/utils/util";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { filterJobs } from "@/utils/filter";
 
-export default function Home() {
-  const [allJobsList, setAllJobsList] = useState<Job[][]>([]);
+export default function Home({
+  jobs,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [allJobsList, setAllJobsList] = useState<Job[][]>(
+    jobs.map((job) => [job])
+  );
   const [jobsList, setJobsList] = useState<Job[][]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const maxPageNumber = useMemo(
@@ -27,29 +34,23 @@ export default function Home() {
     }: States
   ) => {
     e.preventDefault();
-    // if (!andWord && !orWord && (!sortCriteriaText || !sortDirection)) return;
-    fetch(
-      `/api/filter?andWord=${andWord}&orWord=${orWord}&sortCriteria=${sortCriteriaText}&sortDirection=${sortDirection}&shouldSummarizeByCompany=${shouldSummarizeByCompany}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobsList(data);
-        setPageNumber(1);
-      });
+
+    const searchCondition = {
+      andWords: (andWord as string).split(/\s+/),
+      orWords: (orWord as string).split(/\s+/),
+      sortCriteria: sortCriteriaText,
+      sortDirection,
+      shouldSummarizeByCompany,
+    };
+    const filteredJobs = filterJobs(searchCondition, jobs);
+    setAllJobsList(filteredJobs);
+    setPageNumber(1);
   };
 
   const handleClickPagination = (nextPageNumber: number) => {
     if (nextPageNumber < 1 || nextPageNumber > maxPageNumber) return;
     setPageNumber(nextPageNumber);
   };
-
-  useEffect(() => {
-    fetch("/api/")
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobsList(data);
-      });
-  }, []);
 
   useEffect(() => {
     setJobsList(allJobsList.slice((pageNumber - 1) * 10, pageNumber * 10));
@@ -104,3 +105,8 @@ export default function Home() {
     </div>
   );
 }
+
+export const getServerSideProps = (async () => {
+  const jobs = await loadAllJobs();
+  return { props: { jobs } };
+}) satisfies GetServerSideProps<{ jobs: Job[] }>;

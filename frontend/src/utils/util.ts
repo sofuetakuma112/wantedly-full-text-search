@@ -2,25 +2,9 @@ import _ from "lodash";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "./firebase";
 import Papa from "papaparse";
+import { Job } from "@/types/type";
 
-type Job = {
-  title: string;
-  company: string;
-  establishmentDate: string;
-  countOfMember: string;
-  location: string;
-  publishDate: string;
-  view: string;
-  countOfEntry: string;
-  description: string;
-  summary: string;
-  tags: string;
-  url: string;
-  eyecatchImgSrc: string;
-  companyThumbnailImgSrc: string;
-};
-
-export const loadAllJobs = async (): Promise<any[]> => {
+export const loadAllJobs = async (): Promise<Job[]> => {
   const listOfJobListForEachCsv = await getCsvFileNameList();
   return _.uniqBy(listOfJobListForEachCsv, "url");
 };
