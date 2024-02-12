@@ -8,6 +8,5 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const jobs = await loadAllJobs();
-  console.log(jobs);
   res.status(200).json(jobs.map((job: any) => [job]));
 }
